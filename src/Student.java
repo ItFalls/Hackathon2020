@@ -1,3 +1,5 @@
+import java.awt.*;
+
 public class Student {
 
     private int x = 0;
@@ -18,6 +20,10 @@ public class Student {
 
     public int getY(){
         return y;
+    }
+
+    public void draw(Graphics g) {
+        g.fillRect(x,y);
     }
 
 
