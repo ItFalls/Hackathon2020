@@ -1,14 +1,7 @@
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.*;
+import java.awt.event.*;
 import java.util.ArrayList;
-import javax.swing.ImageIcon;
+import java.util.Scanner;
 import javax.swing.JPanel;
 
 public class Runner extends JPanel implements ActionListener, KeyListener, MouseListener {
@@ -19,7 +12,7 @@ public class Runner extends JPanel implements ActionListener, KeyListener, Mouse
     ArrayList<Student> students;
 
     public Runner() {
-        students = new ArrayList<Student>();
+        students = new ArrayList<>();
     }
 
     //Paints everything
@@ -29,23 +22,55 @@ public class Runner extends JPanel implements ActionListener, KeyListener, Mouse
         g.fillRect((int) (getWidth() * 7.5 / 9), 0, (getWidth()), getHeight());
         g.setColor(Color.lightGray);
         g.setFont(font);
-        for(int x=  0; x < students.size(); x++)
+        for (int x = 0; x < students.size(); x++)
             students.get(x).draw(g);
+        repaint();
     }
+
 
     @Override
     public void mouseClicked(MouseEvent arg0) {
-        students.add(new Student(getMousePosition().x - 50, getMousePosition().y  - 25, "Student", true));
+        if (arg0.getButton() == MouseEvent.BUTTON3) {
+            for (int x = 0; x < students.size(); x++) {
+                if (students.get(x).isIntersecting(getMousePosition().x, getMousePosition().y)) {
+                    students.get(x).togglePresent();
+                    repaint();
+                }
+            }
+        } else if (arg0.getButton() == MouseEvent.BUTTON2) {
+            for (int x = 0; x < students.size(); x++) {
+                if (students.get(x).isIntersecting(getMousePosition().x, getMousePosition().y)) {
+                    System.out.print("Enter Student's Name: ");
+                    Scanner sc = new Scanner(System.in);
+                    String name = sc.nextLine();
+                    students.get(x).setName(name);
+                    System.out.println();
+                }
+            }
+        } else {
+            students.add(new Student(getMousePosition().x - 50, getMousePosition().y - 25, "Student", true));
+            for (int x = 0; x < students.size(); x++) {
+                for (int y = 0; y < students.size() && y != x; y++) {
+                    if (students.get(x).circle(students.get(y).getX(), students.get(y).getY())) {
+                        students.get(x).setName("too close!");
+                        students.get(y).setName("too close!");
+                    }
+
+                }
+            }
+            repaint();
+        }
     }
 
     @Override
     public void mouseEntered(MouseEvent arg0) {
-        // TODO Auto-generated method stub
+
     }
+
 
     @Override
     public void mouseExited(MouseEvent arg0) {
-        // TODO Auto-generated method stub
+
     }
 
     @Override
@@ -60,6 +85,10 @@ public class Runner extends JPanel implements ActionListener, KeyListener, Mouse
 
     @Override
     public void keyPressed(KeyEvent arg) {
+        if (arg.getKeyCode() == KeyEvent.VK_BACK_SPACE)
+            if (students.size() > 0)
+                students.remove(students.size() - 1);
+        repaint();
     }
 
     @Override
