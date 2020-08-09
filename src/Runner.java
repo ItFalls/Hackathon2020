@@ -19,24 +19,23 @@ public class Runner extends JPanel implements ActionListener, KeyListener, Mouse
     ArrayList<Student> students;
 
     public Runner() {
-        students=new ArrayList<Student>();
+        students = new ArrayList<Student>();
     }
 
     //Paints everything
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        g.setColor(Color.lightGray);
+        g.setColor(Color.orange);
         g.fillRect((int) (getWidth() * 7.5 / 9), 0, (getWidth()), getHeight());
-        g.setColor(Color.black);
+        g.setColor(Color.lightGray);
         g.setFont(font);
-        System.out.println("do it");
-        students.forEach((a)->a.draw(this,g));
+        for(int x=  0; x < students.size(); x++)
+            students.get(x).draw(g);
     }
-
 
     @Override
     public void mouseClicked(MouseEvent arg0) {
-
+        students.add(new Student(getMousePosition().x - 50, getMousePosition().y  - 25, "Student", true));
     }
 
     @Override

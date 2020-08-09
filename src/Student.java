@@ -22,9 +22,23 @@ public class Student {
         return y;
     }
 
-    public void draw(Graphics g) {
-        g.fillRect(x,y);
+    public void setX(int n){
+        x = n;
     }
 
+    public void setY(int n){
+        y = n;
+    }
 
+    public String getName(){
+        return name;
+    }
+
+    public void setName(String n){
+        name = n;
+    }
+
+    public void draw(Graphics g) {
+        g.fillRect(x,y,100,50);
+    }
 }
